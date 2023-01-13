@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from shortener.models import URL, Template
+from shortener.models import URL, Template, File
 
 
 class ShortenerSerializer(ModelSerializer):
@@ -18,4 +18,10 @@ class ShortenerAllFieldsSerializer(ModelSerializer):
 class TemplateAllFieldsSerializer(ModelSerializer):
     class Meta:
         model = Template
+        fields = '__all__'
+
+
+class FileSerializer(ModelSerializer):
+    class Meta:
+        model = File
         fields = '__all__'
