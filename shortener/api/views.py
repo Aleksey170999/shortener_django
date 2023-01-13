@@ -2,8 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from rest_framework.response import Response
 
-from shortener.excel import get_excel_data, create_excel_row, create_url_from_row
-from shortener.models import URL, Template, ExcelRow
+from shortener.excel import ExcelUtils
+from shortener.models import URL, Template
 
 from shortener.api.serializers import ShortenerSerializer, ShortenerAllFieldsSerializer, TemplateAllFieldsSerializer
 from shortener.qr_generator import QRGenerator
@@ -24,10 +24,10 @@ class ShortUrls(ModelViewSet):
             excel_file = request.FILES['input_excel_file']
             template_instance = Template.objects.get(uid=request.data['template_pk'])
 
-            qs = create_excel_row(excel_file, template_instance)
+            qs = ExcelUtils.create_excel_row(excel_file, template_instance)
             url_qs = []
             for q in qs:
-                url_qs.append(create_url_from_row(q))
+                url_qs.append(ExcelUtils.create_url_from_rows(q))
             qr_gen = QRGenerator()
             qr_gen.generate_all(url_qs)
 

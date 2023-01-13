@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from shortener.models import URL, ExcelRow, File
 
 
 class Command(BaseCommand):
@@ -7,4 +8,6 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        pass
+        URL.objects.all().delete()
+        ExcelRow.objects.all().delete()
+        File.objects.all().delete()

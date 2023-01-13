@@ -1,13 +1,10 @@
 import re
 import random
-import uuid
 from typing import List
-
 from django.db import models
 from psycopg2 import IntegrityError
 from django.conf import settings
 from jsonfield import JSONField
-
 from shortener.mixins import UidPrimaryModel
 
 
@@ -36,6 +33,8 @@ class URL(UidPrimaryModel):
 
     template = models.ForeignKey(Template, models.PROTECT, null=True, blank=True)
 
+    is_qr_generated = models.BooleanField(default=False)
+
     def __str__(self):
         return f'{self.long_url} to {self.code}'
 
@@ -61,10 +60,29 @@ class URL(UidPrimaryModel):
                 except URL.DoesNotExist:
                     continue
 
+    def set_is_generated(self):
+        self.is_qr_generated = True
+
 
 class ExcelRow(UidPrimaryModel):
     template_passes = JSONField()
     template = models.ForeignKey(Template, models.PROTECT, null=True, blank=True)
+    is_url_generated = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.uid)
+
+    def set_is_url_generated(self):
+        self.is_url_generated = True
+
+
+class File(UidPrimaryModel):
+    template = models.ForeignKey(Template, on_delete=models.CASCADE, null=True)
+    excel = models.FileField(upload_to="documents/excel")
+    is_parsed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.uid)
+
+    def set_parsed(self):
+        self.is_parsed = True

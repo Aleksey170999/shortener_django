@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from shortener.excel import ExcelUtils
 
 
 class Command(BaseCommand):
@@ -7,4 +8,5 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        pass
+        excel_utils = ExcelUtils()
+        excel_utils.parse_not_parsed_files()

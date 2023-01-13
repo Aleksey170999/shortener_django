@@ -1,4 +1,5 @@
 import qrcode
+from shortener.models import URL
 
 
 class QRGenerator():
@@ -6,6 +7,9 @@ class QRGenerator():
         self.png_dir = "qrcodes/png/"
         self.svg_dir = "qrcodes/svg/"
         self.pdf_dir = "qrcodes/pdf/"
+
+    def get_urls_no_qr(self):
+        return URL.objects.filter(is_qr_generated=False)
 
     def generate_one_png(self, ins):
         data_to_qr = ins.get_short_url()
@@ -16,3 +20,5 @@ class QRGenerator():
     def generate_all(self, qs):
         for ins in qs:
             self.generate_one_png(ins)
+            ins.set_is_generated()
+            ins.save()
