@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "shortener-django-api"
+version = "0.1.0"
+description = ""
+authors = ["Aleksey"]
+readme = "README.md"
+packages = [{include = "shortener_django_api"}]
+
+[tool.poetry.dependencies]
+python = "3.10.5"
+django = "^4.1.5"
+djangorestframework = "^3.14.0"
+pandas = "^1.5.2"
+openpyxl = "^3.0.10"
+drf-yasg = "^1.21.4"
+psycopg2 = "^2.9.5"
+django-jsonfield = "^1.4.1"
+qrcode = "^7.3.1"
+django-environ = "^0.9.0"
+image = "^1.5.33"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

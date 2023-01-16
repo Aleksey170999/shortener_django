@@ -1,14 +1,21 @@
 import string
 from pathlib import Path
+from environ import Env
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-e3p0r71f%!a@8@)g*7fv1oflk=0bfzo=pjj78y)ct4l%q%qhbf'
+env = Env(**{
+    'DEBUG': (bool, True),
+    'ALLOWED_HOSTS': (list, ['localhost', '127.0.0.1']),
+})
 
-DEBUG = True
+Env.read_env(BASE_DIR / '.env')
 
-ALLOWED_HOSTS = []
 
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +27,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'shortener',
+    'app',
     'drf_yasg',
 ]
 
@@ -57,14 +64,7 @@ WSGI_APPLICATION = 'cfg.wsgi.application'
 # Database
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'shortener',
-        'USER': 'dev',
-        'PASSWORD': 'dev',
-        'HOST': 'localhost',
-        'PORT': 5432,
-    }
+    'default': env.db()
 }
 
 
